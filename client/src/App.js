@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
+import { Link } from 'react-router-dom';
+
 
 class App extends Component {
   state = {users: []}
 
   componentDidMount() {
-    fetch('/users')
+    fetch('/api/video')
       .then(res => res.json())
       .then(users => this.setState({ users }));
   }
@@ -13,9 +15,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>Users</h1>
+        <h1>Videos</h1>
+        <h4><Link to="/upload"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Upload Video</Link></h4>
         {this.state.users.map(user =>
-          <div key={user.id}>{user.username}</div>
+          <tr>
+            <td><Link to={`/show/${user.id}`}>{user.username}</Link></td>
+          </tr>
         )}
       </div>
     );
