@@ -1,17 +1,41 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import './Upload.css';
 
-class Upload extends Component {
+class Upload extends React.Component {
+  constructor(props) {
+    super(props);
 
-    render(){
-        return (
-            <div>
-                Upload 
-            </div>
-        )
-    }
+    this.state = {
+      imageURL: '',
+    };
+
+    this.handleUploadImage = this.handleUploadImage.bind(this);
+  }
+
+  handleUploadImage(ev) {
+    ev.preventDefault();
+
+    const data = new FormData();
+    data.append('file', this.uploadInput.files[0]);
+    
+
+    fetch('/api/video', {
+      method: 'POST',
+      body: data,
+    }).then(res => res.json())
+    .then(result => console.log(result))
+    .catch(err => console.error(err))
+  }
+
+  render() {
+    return (
+      <form className="form" onSubmit={this.handleUploadImage}>
+          <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
+          <button>Upload</button>
+      </form>
+    );
+  }
 }
 
 export default Upload;
